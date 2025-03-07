@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+WALLPAPER_APP/wallpaper_app/linux/
+WALLPAPER_APP/wallpaper_app/macos/
+WALLPAPER_APP/wallpaper_app/windows/
+

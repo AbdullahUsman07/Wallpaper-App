@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallpaper_app/screens/setwallpaperScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,25 +39,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   loadImages() async {
-
     setState(() {
-      page = page +1;
+      page = page + 1;
     });
     String url =
         'https://api.pexels.com/v1/curated?per_page=80&page=' + page.toString();
 
-    await http.get(
-      Uri.parse(url),
-      headers: {
-        'Authorization':
-            'OexyxXuTN6BwrCVATr681z6xvs48aigU32GXhYCBMd0Hp2xLQ4HN0QQ9',
-      },
-    ).then((value){
-      Map result = jsonDecode(value.body);
-      setState(() {
-        images.addAll(result['photos']);
-      });
-    });
+    await http
+        .get(
+          Uri.parse(url),
+          headers: {
+            'Authorization':
+                'OexyxXuTN6BwrCVATr681z6xvs48aigU32GXhYCBMd0Hp2xLQ4HN0QQ9',
+          },
+        )
+        .then((value) {
+          Map result = jsonDecode(value.body);
+          setState(() {
+            images.addAll(result['photos']);
+          });
+        });
   }
 
   @override
@@ -76,11 +77,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   childAspectRatio: 2 / 3,
                 ),
                 itemBuilder: (context, index) {
-                  return Container(
-                    color: Colors.white,
-                    child: Image.network(
-                      images[index]['src']['tiny'],
-                      fit: BoxFit.cover,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => SetWallpaper(
+                                imageUrl: images[index]['src']['large2x'],
+                              ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      child: Image.network(
+                        images[index]['src']['tiny'],
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   );
                 },
@@ -88,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           InkWell(
-            onTap: (){
+            onTap: () {
               loadImages();
             },
             child: Container(
@@ -96,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               child: Center(
                 child: const Text(
-                  'Load More',
+                  'Show More',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
